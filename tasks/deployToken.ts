@@ -38,7 +38,7 @@ task("deployToken", "Deploys a token")
       name,
       symbol,
       decimals,
-      maxsupply:maxSupply,
+      maxsupply: maxSupply,
       withgetccipadmin: withGetCCIPAdmin,
       ccipadminaddress: ccipAdminAddress,
       verifycontract: verifyContract,

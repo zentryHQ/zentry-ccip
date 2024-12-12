@@ -8,7 +8,6 @@ import "./applyChainUpdates";
 import "./transferTokens";
 import "./mintTokens";
 import "./updateRateLimiters";
-import "./safe-multisig";
 import "./getPoolConfig";
 import "./getCurrentRateLimits";
 import "./setRateLimitAdmin";
