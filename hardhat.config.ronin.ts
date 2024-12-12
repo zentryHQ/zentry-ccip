@@ -1,7 +1,7 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "@nomicfoundation/hardhat-verify";
-import { etherscan, networks } from "./config";
+import { networks } from "./config";
 import "./tasks";
 
 const SOLC_SETTINGS = {
@@ -20,8 +20,12 @@ const config: HardhatUserConfig = {
       },
     ],
   },
-  etherscan: { ...etherscan },
+  etherscan: { enabled: false },
   networks: { ...networks },
+  sourcify: {
+    enabled: true,
+    apiUrl: "https://sourcify.roninchain.com/server/",
+  },
 };
 
 export default config;
