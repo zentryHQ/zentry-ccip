@@ -3,9 +3,24 @@
 ## Scripts
 
 ```
-npx hardhat deployToken --name "Zentcorgi" --symbol ZENTCORGI --decimals 18 --maxsupply 0 --withgetccipadmin false --verifycontract true --network sepolia
+npx hardhat deployToken \
+--name "Zentcorgi" \
+--symbol ZENTCORGI \
+--decimals 18 \
+--maxsupply 0 \
+--withgetccipadmin false \
+--verifycontract true \
+--network sepolia
 
-npx hardhat deployToken --name "Zentcorgi" --symbol ZENTCORGI --decimals 18 --maxsupply 0 --withgetccipadmin false --verifycontract true --network roninSaigon --config hardhat.config.ronin.ts
+npx hardhat deployToken \
+--name "Zentcorgi" \
+--symbol ZENTCORGI \
+--decimals 18 \
+--maxsupply 0 \
+--withgetccipadmin false \
+--verifycontract true \
+--network roninSaigon \
+--config hardhat.config.ronin.ts
 
 npx hardhat deployTokenPool \
   --tokenaddress 0xDb1b76C1C5a2cc4E2176f4ec5267B2fbEa75bE29 \
@@ -76,6 +91,7 @@ npx hardhat mintTokens \
 npx hardhat transferTokens \
 --tokenaddress 0xDb1b76C1C5a2cc4E2176f4ec5267B2fbEa75bE29 \
 --amount 10000 \
+--fee native \
 --destinationchain roninSaigon \
 --receiveraddress 0xA29802785708B216F3C44484dF998aAC081Fb091 \
 --network sepolia
