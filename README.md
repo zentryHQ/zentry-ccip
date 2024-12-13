@@ -2,7 +2,7 @@
 
 ## Overview
 
-Zentry Token cross-chain transfer using Chainlink CCIP.
+Zentry cross-chain transfer contracts using Chainlink CCIP.
 
 ## Scripts
 
@@ -11,7 +11,7 @@ Zentry Token cross-chain transfer using Chainlink CCIP.
 # Deploy ERC677 token on Sepolia
 npx hardhat deployToken \
 --name "Zentry" \
---symbol tZENT \
+--symbol ZENTCORGI \
 --decimals 18 \
 --maxsupply 0 \
 --withgetccipadmin false \
@@ -21,7 +21,7 @@ npx hardhat deployToken \
 # Deploy ERC677 token on Ronin Saigon
 npx hardhat deployToken \
 --name "Zentry" \
---symbol tZENT \
+--symbol ZENTCORGI \
 --decimals 18 \
 --maxsupply 0 \
 --withgetccipadmin false \
@@ -189,7 +189,7 @@ npx hardhat deployToken [parameters]
 - Deploy a token:
 
   ```bash
-  npx hardhat deployToken --name "Zentcorgi" --symbol "ZENTCORGI" --network roninSaigon
+  npx hardhat deployToken --name "Zent" --symbol "ZENTCORGI" --network roninSaigon
   ```
 
 - Deploy a token with CCIP admin functionality:
@@ -197,7 +197,7 @@ npx hardhat deployToken [parameters]
   ```bash
   npx hardhat deployToken \
   --name "Zentry" \
-  --symbol "tZENT" \
+  --symbol "ZENTCORGI" \
   --withgetccipadmin true \
   --ccipadminaddress 0xYourCCIPAdminAddress \
   --network roninSaigon
@@ -207,7 +207,7 @@ npx hardhat deployToken [parameters]
   ```bash
   npx hardhat deployToken \
   --name "Zentry" \
-  --symbol "tZENT" \
+  --symbol "ZENTCORGI" \
   --maxsupply 1000000000000000000000 \
   --verifycontract true \
   --network roninSaigon
