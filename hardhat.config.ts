@@ -13,6 +13,9 @@ const SOLC_SETTINGS = {
 
 const config: HardhatUserConfig = {
   solidity: {
+    settings: {
+      evmVersion: "paris",
+    },
     compilers: [
       {
         version: "0.8.24",
@@ -22,6 +25,12 @@ const config: HardhatUserConfig = {
   },
   etherscan: { ...etherscan },
   networks: { ...networks },
+  paths: {
+    sources: "./contracts",
+    tests: "./test",
+    cache: "./cache",
+    artifacts: "./artifacts",
+  },
 };
 
 export default config;

@@ -10,7 +10,8 @@
     "compile:hardhat": "hardhat compile",
     "compile:typechain": "hardhat typechain",
     "compile:typescript": "tsc --noEmit",
-    "compile": "npm run compile:hardhat && npm run compile:typescript"
+    "compile": "npm run compile:hardhat && npm run compile:typescript",
+    "test": "npx hardhat test"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
@@ -24,11 +25,10 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
+    "@chainlink/contracts": "^1.2.0",
     "@chainlink/contracts-ccip": "^1.5.1-beta.2",
     "@chainlink/env-enc": "^1.0.5",
-    "@safe-global/api-kit": "^2.4.5",
-    "@safe-global/protocol-kit": "^4.1.0",
-    "@safe-global/safe-core-sdk-types": "^5.1.0",
+    "@chainlink/local": "^0.2.2",
     "winston": "^3.13.0"
   }
 }

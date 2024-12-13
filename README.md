@@ -1,20 +1,27 @@
 # Zentry CCIP
 
+## Overview
+
+Zentry Token cross-chain transfer using Chainlink CCIP.
+
 ## Scripts
 
-```
+### CCIP Setup
+```bash
+# Deploy ERC677 token on Sepolia
 npx hardhat deployToken \
---name "Zentcorgi" \
---symbol ZENTCORGI \
+--name "Zentry" \
+--symbol tZENT \
 --decimals 18 \
 --maxsupply 0 \
 --withgetccipadmin false \
 --verifycontract true \
 --network sepolia
 
+# Deploy ERC677 token on Ronin Saigon
 npx hardhat deployToken \
---name "Zentcorgi" \
---symbol ZENTCORGI \
+--name "Zentry" \
+--symbol tZENT \
 --decimals 18 \
 --maxsupply 0 \
 --withgetccipadmin false \
@@ -22,16 +29,20 @@ npx hardhat deployToken \
 --network roninSaigon \
 --config hardhat.config.ronin.ts
 
+# Deploy Lock & Release pool on Sepolia
 npx hardhat deployTokenPool \
-  --tokenaddress 0xDb1b76C1C5a2cc4E2176f4ec5267B2fbEa75bE29 \
-  --pooltype lockRelease \
+  --tokenaddress 0xZENT-SEPOLIA \
+  --pooltype releaseLock \
   --localtokendecimals 18 \
   --acceptliquidity true \
   --verifycontract true \
   --network sepolia
 
+# Deploy Burn & Mint pool on Ronin Saigon
+# The contract verification may fail on Ronin Saigon
+# We'll need to verify the contract manually by upload build artifact to Sourcify
 npx hardhat deployTokenPool \
-  --tokenaddress 0x582520502408505D33F9D26a1d1F7A541AeC4eE7 \
+  --tokenaddress 0xZENT-SAIGON \
   --pooltype burnMint \
   --localtokendecimals 18 \
   --acceptliquidity true \
@@ -39,68 +50,86 @@ npx hardhat deployTokenPool \
   --network roninSaigon \
   --config hardhat.config.ronin.ts
 
+# Claim CCIP Admin on Sepolia
 npx hardhat claimAdmin \
-  --tokenaddress 0xDb1b76C1C5a2cc4E2176f4ec5267B2fbEa75bE29 \
+  --tokenaddress 0xZENT-SEPOLIA \
   --withccipadmin false \
   --network sepolia
 
+# Claim CCIP Admin on Ronin Saigon
 npx hardhat claimAdmin \
-  --tokenaddress 0x582520502408505D33F9D26a1d1F7A541AeC4eE7 \
+  --tokenaddress 0xZENT-SAIGON \
   --withccipadmin false \
   --network roninSaigon
 
 npx hardhat acceptAdminRole \
-  --tokenaddress 0xDb1b76C1C5a2cc4E2176f4ec5267B2fbEa75bE29 \
+  --tokenaddress 0xZENT-SEPOLIA \
   --network sepolia
 
 npx hardhat acceptAdminRole \
-  --tokenaddress 0x582520502408505D33F9D26a1d1F7A541AeC4eE7 \
+  --tokenaddress 0xZENT-SAIGON \
   --network roninSaigon
 
+# Set CCIP Pool on Sepolia
 npx hardhat setPool \
-  --tokenaddress 0xDb1b76C1C5a2cc4E2176f4ec5267B2fbEa75bE29 \
-  --pooladdress 0x80e4e279AB832845afdF022969A35B4C561426d3 \
+  --tokenaddress 0xZENT-SEPOLIA \
+  --pooladdress 0xZENT-SEPOLIA-POOL \
   --network sepolia
 
+# Set CCIP Pool on Ronin Saigon
 npx hardhat setPool \
-  --tokenaddress 0x582520502408505D33F9D26a1d1F7A541AeC4eE7 \
-  --pooladdress 0xe28fF170eCA36AAaC5FeE2744727D18583E4d730 \
+  --tokenaddress 0xZENT-SAIGON \
+  --pooladdress 0xZENT-SAIGON-POOL \
   --network roninSaigon
 
+# Apply CCIP Config on Sepolia
 npx hardhat applyChainUpdates \
-  --pooladdress 0x80e4e279AB832845afdF022969A35B4C561426d3 \
+  --pooladdress 0xZENT-SEPOLIA-POOL \
   --remotechain roninSaigon \
-  --remotepooladdresses 0xe28fF170eCA36AAaC5FeE2744727D18583E4d730 \
-  --remotetokenaddress 0x582520502408505D33F9D26a1d1F7A541AeC4eE7 \
+  --remotepooladdresses 0xZENT-SAIGON-POOL \
+  --remotetokenaddress 0xZENT-SAIGON \
   --network sepolia
 
+# Apply CCIP Config on Ronin Saigon
 npx hardhat applyChainUpdates \
-  --pooladdress 0xe28fF170eCA36AAaC5FeE2744727D18583E4d730 \
+  --pooladdress 0xZENT-SAIGON-POOL \
   --remotechain sepolia \
-  --remotepooladdresses 0x80e4e279AB832845afdF022969A35B4C561426d3 \
-  --remotetokenaddress 0xDb1b76C1C5a2cc4E2176f4ec5267B2fbEa75bE29 \
+  --remotepooladdresses 0xZENT-SEPOLIA-POOL \
+  --remotetokenaddress 0xZENT-SEPOLIA \
   --network roninSaigon
 ```
 
-```
+### CCIP Token Transfer
+```bash
+# Mint ZENT Token on Sepolia
 npx hardhat mintTokens \
---tokenaddress 0xDb1b76C1C5a2cc4E2176f4ec5267B2fbEa75bE29 \
+--tokenaddress 0xZENT-SEPOLIA \
 --amount 1000000000000000000000 \
 --network sepolia
 
+# Transfer ZENT Token from Sepolia to Ronin Saigon
 npx hardhat transferTokens \
---tokenaddress 0xDb1b76C1C5a2cc4E2176f4ec5267B2fbEa75bE29 \
+--tokenaddress 0xZENT-SEPOLIA \
 --amount 10000 \
 --fee native \
 --destinationchain roninSaigon \
---receiveraddress 0xA29802785708B216F3C44484dF998aAC081Fb091 \
+--receiveraddress 0xTARGET-ADDRESS \
 --network sepolia
+
+# Transfer ZENT Token from Ronin Saigon to Sepolia
+npx hardhat transferTokens \
+--tokenaddress 0xZENT-SAIGON \
+--amount 10000 \
+--fee native \
+--destinationchain sepolia \
+--receiveraddress 0xTARGET-ADDRESS \
+--network roninSaigon
 ```
 
 
 ## Table of Contents
 
-**EOA**:
+**Hardhat Tasks**:
 
 - [deployToken](#deploytoken)
 - [deployTokenPool](#deploytokenpool)
@@ -120,7 +149,7 @@ npx hardhat transferTokens \
 - [acceptTokenAdminRole](#accepttokenadminrole)
 - [getCurrentRateLimits](#getcurrentratelimits)
 
-## EOA
+## Hardhat Tasks
 
 ### deployToken
 
@@ -167,8 +196,8 @@ npx hardhat deployToken [parameters]
 
   ```bash
   npx hardhat deployToken \
-  --name "Zentcorgi" \
-  --symbol "ZENTCORGI" \
+  --name "Zentry" \
+  --symbol "tZENT" \
   --withgetccipadmin true \
   --ccipadminaddress 0xYourCCIPAdminAddress \
   --network roninSaigon
@@ -177,8 +206,8 @@ npx hardhat deployToken [parameters]
 - Deploy a token with a maximum supply and verify the contract:
   ```bash
   npx hardhat deployToken \
-  --name "Zentcorgi" \
-  --symbol "ZENTCORGI" \
+  --name "Zentry" \
+  --symbol "tZENT" \
   --maxsupply 1000000000000000000000 \
   --verifycontract true \
   --network roninSaigon

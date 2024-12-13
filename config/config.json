@@ -7,6 +7,7 @@
     "tokenAdminRegistry": "0x95F29FEE11c5C55d26cCcf1DB6772DE953B37B82",
     "registryModuleOwnerCustom": "0x62e731218d0D47305aba2BE3751E7EE9E5520790",
     "link": "0x779877A7B0D9E8603169DdbD7836e478b4624789",
+    "zent": "",
     "confirmations": 2,
     "nativeCurrencySymbol": "ETH"
   },
@@ -18,6 +19,7 @@
     "tokenAdminRegistry": "0x8126bE56454B628a88C17849B9ED99dd5a11Bd2f",
     "registryModuleOwnerCustom": "0xE625f0b8b0Ac86946035a7729Aba124c8A64cf69",
     "link": "0xb1D4538B4571d411F07960EF2838Ce337FE1E80E",
+    "zent": "",
     "confirmations": 2,
     "nativeCurrencySymbol": "ETH"
   },
@@ -29,6 +31,7 @@
     "tokenAdminRegistry": "0x736D0bBb318c1B27Ff686cd19804094E66250e17",
     "registryModuleOwnerCustom": "0x8A55C61227f26a3e2f217842eCF20b52007bAaBe",
     "link": "0xE4aB69C077896252FAFBD49EFD26B5D171A32410",
+    "zent": "",
     "confirmations": 2,
     "nativeCurrencySymbol": "ETH"
   },
@@ -40,6 +43,7 @@
     "tokenAdminRegistry": "0x057879f376041D527a98327DE2Ec00F201c9cA25",
     "registryModuleOwnerCustom": "0xE31827cd24d7D419fC17E7Ff889BaF62A17991A0",
     "link": "0x5bB50A6888ee6a67E22afFDFD9513be7740F1c15",
+    "zent": "",
     "confirmations": 2,
     "nativeCurrencySymbol": "RON"
   }
