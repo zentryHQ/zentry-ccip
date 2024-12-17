@@ -196,6 +196,7 @@ task("deployTokenPool", "Deploys a token pool")
         }
       } else {
         logger.info("Token pool contract deployed successfully");
+        return tokenPoolAddress;
       }
     } catch (error) {
       logger.error(error);

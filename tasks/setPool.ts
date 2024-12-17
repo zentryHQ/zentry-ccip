@@ -74,4 +74,6 @@ task("setPool", "Set the pool for a token")
     // Wait for transaction confirmation
     await tx.wait(confirmations);
     logger.info(`Pool set for token ${tokenAddress} to ${poolAddress}`);
+
+    return tx.hash;
   });
