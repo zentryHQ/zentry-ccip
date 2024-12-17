@@ -1,3 +1,5 @@
+import { HardhatNetworkUserConfig } from "hardhat/types";
+
 export interface ChainConfig {
   chainId?: number;
   chainSelector: string;
@@ -27,9 +29,12 @@ export interface NetworkConfig extends ChainConfig {
   accounts: string[];
 }
 
-export type Networks = Partial<{
-  [key in Chains]: NetworkConfig;
-}>;
+export type Networks =
+  | Partial<{
+      [key in Chains]: NetworkConfig;
+    }> & {
+      hardhat?: HardhatNetworkUserConfig & { confirmations: number };
+    };
 
 type ApiKeyConfig = Partial<{
   [key in Chains]: string;

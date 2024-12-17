@@ -1,4 +1,6 @@
 import hre from "hardhat";
+import { Chains } from "../../config";
+import { networks } from "../../config";
 
 describe("CCIP", function () {
   it("should deploy and configure ZENT token bridge on CCIP", async function () {
@@ -16,8 +18,13 @@ describe("CCIP", function () {
     8. accept admin role of rZENT token
     9. link and config token pool for rZENT on Ronin
     */
+    const mainnetConfig = networks[Chains.mainnet];
 
     const zentTokenAddress = "0xdbb7a34bf10169d6d2d0d02a6cbb436cf4381bfa";
+    // Check if network is defined in config
+    if (!mainnetConfig) {
+      throw new Error(`Network ${Chains.mainnet} not found in config`);
+    }
 
     await hre.network.provider.request({
       method: "hardhat_reset",
@@ -28,6 +35,15 @@ describe("CCIP", function () {
           },
         },
       ],
+    });
+
+    // run task to deploy token pool on mainnet
+    await hre.run("deployTokenPool", {
+      tokenaddress: zentTokenAddress,
+      pooltype: "lockRelease",
+      acceptliquidity: true,
+      router: mainnetConfig.router,
+      rmnproxy: mainnetConfig.rmnProxy,
     });
   });
 });

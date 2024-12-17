@@ -13,6 +13,8 @@ interface DeployTokenPoolTaskArgs {
   pooltype: string; // 'burnMint' or 'lockRelease'
   acceptliquidity?: boolean; // Optional, defaults to false
   localtokendecimals?: number; // Optional, defaults to 18
+  router?: string;
+  rmnproxy?: string;
 }
 
 // Task to deploy a Token Pool (BurnMintTokenPool or LockReleaseTokenPool)
@@ -42,6 +44,8 @@ task("deployTokenPool", "Deploys a token pool")
     18,
     types.int
   )
+  .addOptionalParam("router", "Router address", undefined, types.string)
+  .addOptionalParam("rmnproxy", "RMN Proxy address", undefined, types.string)
   .setAction(async (taskArgs: DeployTokenPoolTaskArgs, hre) => {
     const {
       verifycontract: verifyContract,
@@ -64,7 +68,14 @@ task("deployTokenPool", "Deploys a token pool")
     }
 
     // Extract router and RMN proxy from the network config
-    const { router, rmnProxy, confirmations } = networkConfig;
+    let { router, rmnProxy, confirmations } = networkConfig;
+
+    // Overwrite router and rmnProxy for hardhat network
+    if ((networkName as string) === "hardhat") {
+      router = taskArgs.router as string;
+      rmnProxy = taskArgs.rmnproxy as string;
+    }
+
     if (!router || !rmnProxy) {
       throw new Error(`Router or RMN Proxy not defined for ${networkName}`);
     }

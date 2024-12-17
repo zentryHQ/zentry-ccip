@@ -32,7 +32,7 @@ npx hardhat deployToken \
 # Deploy Lock & Release pool on Sepolia
 npx hardhat deployTokenPool \
   --tokenaddress 0xZENT-SEPOLIA \
-  --pooltype releaseLock \
+  --pooltype lockRelease \
   --localtokendecimals 18 \
   --acceptliquidity true \
   --verifycontract true \

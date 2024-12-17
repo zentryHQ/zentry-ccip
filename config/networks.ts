@@ -10,6 +10,9 @@ if (PRIVATE_KEY) {
 }
 
 const networks: Networks = {
+  hardhat: {
+    confirmations: 1,
+  },
   [Chains.mainnet]: {
     ...configData.mainnet,
     url: process.env.MAINNET_RPC_URL || "UNSET",
