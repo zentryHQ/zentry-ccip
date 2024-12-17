@@ -10,23 +10,16 @@ if (PRIVATE_KEY) {
 }
 
 const networks: Networks = {
+  [Chains.mainnet]: {
+    ...configData.mainnet,
+    url: process.env.MAINNET_RPC_URL || "UNSET",
+    gasPrice: undefined,
+    nonce: undefined,
+    accounts,
+  },
   [Chains.sepolia]: {
     ...configData.ethereumSepolia,
-    url: process.env.ETHEREUM_SEPOLIA_RPC_URL || "UNSET",
-    gasPrice: undefined,
-    nonce: undefined,
-    accounts,
-  },
-  [Chains.baseSepolia]: {
-    ...configData.baseSepolia,
-    url: process.env.BASE_SEPOLIA_RPC_URL || "UNSET",
-    gasPrice: undefined,
-    nonce: undefined,
-    accounts,
-  },
-  [Chains.arbitrumSepolia]: {
-    ...configData.arbitrumSepolia,
-    url: process.env.ARBITRUM_SEPOLIA_RPC_URL || "UNSET",
+    url: process.env.SEPOLIA_RPC_URL || "UNSET",
     gasPrice: undefined,
     nonce: undefined,
     accounts,
@@ -43,8 +36,6 @@ const networks: Networks = {
 const etherscan: EtherscanConfig = {
   apiKey: {
     [Chains.sepolia]: process.env.ETHERSCAN_API_KEY || "UNSET",
-    [Chains.arbitrumSepolia]: process.env.ARBISCAN_API_KEY || "UNSET",
-    [Chains.baseSepolia]: process.env.BASESCAN_API_KEY || "UNSET",
   },
   customChains: [
     {

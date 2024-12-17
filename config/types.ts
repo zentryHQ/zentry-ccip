@@ -11,9 +11,8 @@ export interface ChainConfig {
 }
 
 export enum Chains {
-  arbitrumSepolia = "arbitrumSepolia",
+  mainnet = "mainnet",
   sepolia = "sepolia",
-  baseSepolia = "baseSepolia",
   roninSaigon = "roninSaigon",
 }
 

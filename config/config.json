@@ -1,4 +1,15 @@
 {
+  "mainnet": {
+    "chainId": 1,
+    "chainSelector": "5009297550715157269",
+    "router": "0x80226fc0Ee2b096224EeAc085Bb9a8cba1146f7D",
+    "rmnProxy": "0x411dE17f12D1A34ecC7F45f49844626267c75e81",
+    "tokenAdminRegistry": "0xb22764f98dD05c789929716D677382Df22C05Cb6",
+    "registryModuleOwnerCustom": "0x13022e3e6C77524308BD56AEd716E88311b2E533",
+    "link": "0x13022e3e6C77524308BD56AEd716E88311b2E533",
+    "confirmations": 2,
+    "nativeCurrencySymbol": "ETH"
+  },
   "ethereumSepolia": {
     "chainId": 11155111,
     "chainSelector": "16015286601757825753",
@@ -7,7 +18,6 @@
     "tokenAdminRegistry": "0x95F29FEE11c5C55d26cCcf1DB6772DE953B37B82",
     "registryModuleOwnerCustom": "0x62e731218d0D47305aba2BE3751E7EE9E5520790",
     "link": "0x779877A7B0D9E8603169DdbD7836e478b4624789",
-    "zent": "",
     "confirmations": 2,
     "nativeCurrencySymbol": "ETH"
   },
@@ -19,19 +29,6 @@
     "tokenAdminRegistry": "0x8126bE56454B628a88C17849B9ED99dd5a11Bd2f",
     "registryModuleOwnerCustom": "0xE625f0b8b0Ac86946035a7729Aba124c8A64cf69",
     "link": "0xb1D4538B4571d411F07960EF2838Ce337FE1E80E",
-    "zent": "",
-    "confirmations": 2,
-    "nativeCurrencySymbol": "ETH"
-  },
-  "baseSepolia": {
-    "chainId": 84532,
-    "chainSelector": "10344971235874465080",
-    "router": "0xD3b06cEbF099CE7DA4AcCf578aaebFDBd6e88a93",
-    "rmnProxy": "0x99360767a4705f68CcCb9533195B761648d6d807",
-    "tokenAdminRegistry": "0x736D0bBb318c1B27Ff686cd19804094E66250e17",
-    "registryModuleOwnerCustom": "0x8A55C61227f26a3e2f217842eCF20b52007bAaBe",
-    "link": "0xE4aB69C077896252FAFBD49EFD26B5D171A32410",
-    "zent": "",
     "confirmations": 2,
     "nativeCurrencySymbol": "ETH"
   },
@@ -43,7 +40,6 @@
     "tokenAdminRegistry": "0x057879f376041D527a98327DE2Ec00F201c9cA25",
     "registryModuleOwnerCustom": "0xE31827cd24d7D419fC17E7Ff889BaF62A17991A0",
     "link": "0x5bB50A6888ee6a67E22afFDFD9513be7740F1c15",
-    "zent": "",
     "confirmations": 2,
     "nativeCurrencySymbol": "RON"
   }

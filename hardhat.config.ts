@@ -1,7 +1,10 @@
-import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "@nomicfoundation/hardhat-verify";
+import { HardhatUserConfig } from "hardhat/config";
+
+import "dotenv/config";
 import { etherscan, networks } from "./config";
+
 import "./tasks";
 
 const SOLC_SETTINGS = {
@@ -12,6 +15,7 @@ const SOLC_SETTINGS = {
 };
 
 const config: HardhatUserConfig = {
+  defaultNetwork: "hardhat",
   solidity: {
     settings: {
       evmVersion: "paris",
