@@ -1,22 +1,23 @@
 import hre from "hardhat";
 import { Chains } from "../../config";
 import { networks } from "../../config";
+import { BurnMintERC677 } from "../../typechain-types";
 
 describe("CCIP", function () {
   it("should deploy and configure ZENT token bridge on CCIP", async function () {
     /*
     Steps:
-    1. fork mainnet
-    2. deploy token pool on mainnet
-    2. impersonate Chainlink TokenAdminRegistry to call proposeAdministrator()
-    3. accept admin role for ZENT token on mainnet
-    4. link and config token pool on ZENT on mainnet
-    5. fork ronin
-    6. deploy ZENT on Ronin (rZENT)
-    6. deploy token pool for rZENT on Ronin
-    7. claim admin role of rZENT token
-    8. accept admin role of rZENT token
-    9. link and config token pool for rZENT on Ronin
+    1. Fork Ethereum Mainnet
+    2. Deploy token pool on mainnet
+    2. Impersonate Chainlink TokenAdminRegistry to call proposeAdministrator()
+    3. Accept admin role for ZENT token on mainnet
+    4. Link and config token pool on ZENT on mainnet
+    5. Fork Ronin Mainnet
+    6. Deploy ZENT on Ronin (rZENT)
+    6. Deploy token pool for rZENT on Ronin
+    7. Claim admin role of rZENT token
+    8. Accept admin role of rZENT token
+    9. Link and config token pool for rZENT on Ronin
     */
     const mainnetConfig = networks[Chains.mainnet];
     const [signer] = await hre.ethers.getSigners();
@@ -96,5 +97,43 @@ describe("CCIP", function () {
     tx = await tokenAdminRegistry.setPool(zentTokenAddress, mainnetPoolAddress);
     await tx.wait();
     console.log("Set CCIP token pool in mainnet", tx.hash);
+
+    // fork ronin
+    await hre.network.provider.request({
+      method: "hardhat_reset",
+      params: [
+        {
+          forking: {
+            jsonRpcUrl: process.env.RONIN_SAIGON_RPC_URL,
+          },
+        },
+      ],
+    });
+
+    // deploy ZENT as BurnMintERC677 on Ronin
+    const { BurnMintERC677__factory } = await import("../../typechain-types");
+    const TokenFactory = new BurnMintERC677__factory(signer);
+
+    // Deploy the token contract with name, symbol, decimals, and maximum supply
+    const rZENT = (await TokenFactory.deploy(
+      "Zentry",
+      "rZENT",
+      18,
+      0
+    )) as BurnMintERC677;
+    const rZENTAddress = await rZENT.getAddress();
+
+    console.log("Deployed rZENT on Ronin", rZENTAddress);
+
+    // run task to deploy token pool on ronin
+    const roninPoolAddress = await hre.run("deployTokenPool", {
+      tokenaddress: rZENTAddress,
+      pooltype: "mintBurn",
+      acceptliquidity: true,
+      router: mainnetConfig.router,
+      rmnproxy: mainnetConfig.rmnProxy,
+    });
+
+    console.log("Ronin Pool Address", roninPoolAddress);
   });
 });
