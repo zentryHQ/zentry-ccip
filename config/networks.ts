@@ -46,6 +46,7 @@ const networks: Networks = {
 const etherscan: EtherscanConfig = {
   apiKey: {
     [Chains.sepolia]: process.env.ETHERSCAN_API_KEY || "UNSET",
+    [Chains.mainnet]: process.env.ETHERSCAN_API_KEY || "UNSET",
   },
   customChains: [
     {
