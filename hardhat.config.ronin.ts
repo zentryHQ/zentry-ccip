@@ -1,7 +1,10 @@
-import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "@nomicfoundation/hardhat-verify";
+import { HardhatUserConfig } from "hardhat/config";
+
+import "dotenv/config";
 import { networks } from "./config";
+
 import "./tasks";
 
 const SOLC_SETTINGS = {
