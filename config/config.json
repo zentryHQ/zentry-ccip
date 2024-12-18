@@ -6,7 +6,7 @@
     "rmnProxy": "0x411dE17f12D1A34ecC7F45f49844626267c75e81",
     "tokenAdminRegistry": "0xb22764f98dD05c789929716D677382Df22C05Cb6",
     "registryModuleOwnerCustom": "0x13022e3e6C77524308BD56AEd716E88311b2E533",
-    "link": "0x13022e3e6C77524308BD56AEd716E88311b2E533",
+    "link": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
     "confirmations": 2,
     "nativeCurrencySymbol": "ETH"
   },
@@ -21,17 +21,6 @@
     "confirmations": 2,
     "nativeCurrencySymbol": "ETH"
   },
-  "arbitrumSepolia": {
-    "chainId": 421614,
-    "chainSelector": "3478487238524512106",
-    "router": "0x2a9C5afB0d0e4BAb2BCdaE109EC4b0c4Be15a165",
-    "rmnProxy": "0x9527E2d01A3064ef6b50c1Da1C0cC523803BCFF2",
-    "tokenAdminRegistry": "0x8126bE56454B628a88C17849B9ED99dd5a11Bd2f",
-    "registryModuleOwnerCustom": "0xE625f0b8b0Ac86946035a7729Aba124c8A64cf69",
-    "link": "0xb1D4538B4571d411F07960EF2838Ce337FE1E80E",
-    "confirmations": 2,
-    "nativeCurrencySymbol": "ETH"
-  },
   "roninSaigon": {
     "chainId": 2021,
     "chainSelector": "13116810400804392105",
@@ -40,6 +29,17 @@
     "tokenAdminRegistry": "0x057879f376041D527a98327DE2Ec00F201c9cA25",
     "registryModuleOwnerCustom": "0xE31827cd24d7D419fC17E7Ff889BaF62A17991A0",
     "link": "0x5bB50A6888ee6a67E22afFDFD9513be7740F1c15",
+    "confirmations": 2,
+    "nativeCurrencySymbol": "RON"
+  },
+  "ronin": {
+    "chainId": 2020,
+    "chainSelector": "6916147374840168594",
+    "router": "0x46527571D5D1B68eE7Eb60B18A32e6C60DcEAf99",
+    "rmnProxy": "0xceA253a8c2BB995054524d071498281E89aACD59",
+    "tokenAdminRegistry": "0x90e83d532A4aD13940139c8ACE0B93b0DdbD323a",
+    "registryModuleOwnerCustom": "0x5055DA89A16b71fEF91D1af323b139ceDe2d8320",
+    "link": "0x3902228D6A3d2Dc44731fD9d45FeE6a61c722D0b",
     "confirmations": 2,
     "nativeCurrencySymbol": "RON"
   }

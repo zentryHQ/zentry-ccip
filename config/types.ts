@@ -16,6 +16,7 @@ export enum Chains {
   mainnet = "mainnet",
   sepolia = "sepolia",
   roninSaigon = "roninSaigon",
+  ronin = "ronin",
 }
 
 export type Configs = {

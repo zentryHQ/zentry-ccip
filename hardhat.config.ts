@@ -15,9 +15,9 @@ const SOLC_SETTINGS = {
 };
 
 const config: HardhatUserConfig = {
-  // mocha: {
-  //   timeout: 100_000,
-  // },
+  mocha: {
+    timeout: 100_000,
+  },
   defaultNetwork: "hardhat",
   solidity: {
     settings: {

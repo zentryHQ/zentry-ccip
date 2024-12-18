@@ -34,6 +34,13 @@ const networks: Networks = {
     nonce: undefined,
     accounts,
   },
+  [Chains.ronin]: {
+    ...configData.ronin,
+    url: process.env.RONIN_RPC_URL || "UNSET",
+    gasPrice: undefined,
+    nonce: undefined,
+    accounts,
+  },
 };
 
 const etherscan: EtherscanConfig = {
@@ -47,6 +54,14 @@ const etherscan: EtherscanConfig = {
       urls: {
         apiURL: "https://saigon-app.roninchain.com",
         browserURL: "https://saigon-app.roninchain.com",
+      },
+    },
+    {
+      network: Chains.ronin,
+      chainId: configData.ronin.chainId,
+      urls: {
+        apiURL: "https://api.roninchain.com",
+        browserURL: "https://app.roninchain.com",
       },
     },
   ],
