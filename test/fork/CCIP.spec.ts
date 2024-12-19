@@ -20,6 +20,7 @@ describe("CCIP", function () {
     9. Link and config token pool for rZENT on Ronin
     */
     const mainnetConfig = networks[Chains.mainnet];
+    const roninConfig = networks[Chains.ronin];
     const [signer] = await hre.ethers.getSigners();
 
     const zentTokenAddress = "0xdbb7a34bf10169d6d2d0d02a6cbb436cf4381bfa";
@@ -104,7 +105,7 @@ describe("CCIP", function () {
       params: [
         {
           forking: {
-            jsonRpcUrl: process.env.RONIN_SAIGON_RPC_URL,
+            jsonRpcUrl: process.env.RONIN_ARCHIVE_RPC_URL,
           },
         },
       ],
@@ -128,10 +129,10 @@ describe("CCIP", function () {
     // run task to deploy token pool on ronin
     const roninPoolAddress = await hre.run("deployTokenPool", {
       tokenaddress: rZENTAddress,
-      pooltype: "mintBurn",
+      pooltype: "burnMint",
       acceptliquidity: true,
-      router: mainnetConfig.router,
-      rmnproxy: mainnetConfig.rmnProxy,
+      router: roninConfig?.router,
+      rmnproxy: roninConfig?.rmnProxy,
     });
 
     console.log("Ronin Pool Address", roninPoolAddress);
