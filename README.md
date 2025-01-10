@@ -2,130 +2,141 @@
 
 ## Overview
 
-Zentry cross-chain transfer contracts using Chainlink CCIP.
+A Zentry Token cross-chain bridge contracts with Chainlink CCIP.
 
 ## Scripts
 
-### CCIP Setup
+### CCIP Bridge Setup (Lock/Release and Burn/Mint)
+
+Follow these steps to deploy and configure the cross-chain bridge between Sepolia and Ronin Saigon networks.
+
+### 1. Deploy Tokens
 ```bash
-# Deploy ERC677 token on Sepolia
+# Deploy ZENT token on Sepolia
 npx hardhat deployToken \
 --name "Zentry" \
---symbol ZENTCORGI \
+--symbol ZENT \
 --decimals 18 \
---maxsupply 0 \
---withgetccipadmin false \
 --verifycontract true \
 --network sepolia
 
-# Deploy ERC677 token on Ronin Saigon
+# Deploy ZENT token on Ronin Saigon
 npx hardhat deployToken \
 --name "Zentry" \
---symbol ZENTCORGI \
+--symbol ZENT \
 --decimals 18 \
---maxsupply 0 \
---withgetccipadmin false \
 --verifycontract true \
 --network roninSaigon \
 --config hardhat.config.ronin.ts
+```
 
-# Deploy Lock & Release pool on Sepolia
+### 2. Deploy Token Pools
+```bash
+# Deploy Lock & Release pool on Sepolia (source chain)
 npx hardhat deployTokenPool \
-  --tokenaddress 0xZENT-SEPOLIA \
+  --tokenaddress <ZENT_SEPOLIA_ADDRESS> \
   --pooltype lockRelease \
-  --localtokendecimals 18 \
   --acceptliquidity true \
   --verifycontract true \
   --network sepolia
 
-# Deploy Burn & Mint pool on Ronin Saigon
-# The contract verification may fail on Ronin Saigon
-# We'll need to verify the contract manually by upload build artifact to Sourcify
+# Deploy Burn & Mint pool on Ronin Saigon (destination chain)
 npx hardhat deployTokenPool \
-  --tokenaddress 0xZENT-SAIGON \
+  --tokenaddress <ZENT_RONIN_ADDRESS> \
   --pooltype burnMint \
-  --localtokendecimals 18 \
-  --acceptliquidity true \
   --verifycontract true \
   --network roninSaigon \
   --config hardhat.config.ronin.ts
+```
 
-# Claim CCIP Admin on Sepolia
-npx hardhat claimAdmin \
-  --tokenaddress 0xZENT-SEPOLIA \
-  --withccipadmin false \
-  --network sepolia
+### 3. Configure Admin Access
+```bash
+# Setup admin roles on both networks
+npx hardhat claimAdmin --tokenaddress <ZENT_SEPOLIA_ADDRESS> --network sepolia
+npx hardhat claimAdmin --tokenaddress <ZENT_RONIN_ADDRESS> --network roninSaigon
+npx hardhat acceptAdminRole --tokenaddress <ZENT_SEPOLIA_ADDRESS> --network sepolia
+npx hardhat acceptAdminRole --tokenaddress <ZENT_RONIN_ADDRESS> --network roninSaigon
+```
 
-# Claim CCIP Admin on Ronin Saigon
-npx hardhat claimAdmin \
-  --tokenaddress 0xZENT-SAIGON \
-  --withccipadmin false \
-  --network roninSaigon
-
-npx hardhat acceptAdminRole \
-  --tokenaddress 0xZENT-SEPOLIA \
-  --network sepolia
-
-npx hardhat acceptAdminRole \
-  --tokenaddress 0xZENT-SAIGON \
-  --network roninSaigon
-
-# Set CCIP Pool on Sepolia
+### 4. Link Tokens to Pools
+```bash
+# Associate tokens with their respective pools
 npx hardhat setPool \
-  --tokenaddress 0xZENT-SEPOLIA \
-  --pooladdress 0xZENT-SEPOLIA-POOL \
+  --tokenaddress <ZENT_SEPOLIA_ADDRESS> \
+  --pooladdress <SEPOLIA_POOL_ADDRESS> \
   --network sepolia
 
-# Set CCIP Pool on Ronin Saigon
 npx hardhat setPool \
-  --tokenaddress 0xZENT-SAIGON \
-  --pooladdress 0xZENT-SAIGON-POOL \
-  --network roninSaigon
-
-# Apply CCIP Config on Sepolia
-npx hardhat applyChainUpdates \
-  --pooladdress 0xZENT-SEPOLIA-POOL \
-  --remotechain roninSaigon \
-  --remotepooladdresses 0xZENT-SAIGON-POOL \
-  --remotetokenaddress 0xZENT-SAIGON \
-  --network sepolia
-
-# Apply CCIP Config on Ronin Saigon
-npx hardhat applyChainUpdates \
-  --pooladdress 0xZENT-SAIGON-POOL \
-  --remotechain sepolia \
-  --remotepooladdresses 0xZENT-SEPOLIA-POOL \
-  --remotetokenaddress 0xZENT-SEPOLIA \
+  --tokenaddress <ZENT_RONIN_ADDRESS> \
+  --pooladdress <RONIN_POOL_ADDRESS> \
   --network roninSaigon
 ```
 
-### CCIP Token Transfer
+### 5. Configure Cross-Chain Settings
 ```bash
-# Mint ZENT Token on Sepolia
+# Setup cross-chain communication on Sepolia
+npx hardhat applyChainUpdates \
+  --pooladdress <SEPOLIA_POOL_ADDRESS> \
+  --remotechain roninSaigon \
+  --remotepooladdresses <RONIN_POOL_ADDRESS> \
+  --remotetokenaddress <ZENT_RONIN_ADDRESS> \
+  --network sepolia
+
+# Setup cross-chain communication on Ronin
+npx hardhat applyChainUpdates \
+  --pooladdress <RONIN_POOL_ADDRESS> \
+  --remotechain sepolia \
+  --remotepooladdresses <SEPOLIA_POOL_ADDRESS> \
+  --remotetokenaddress <ZENT_SEPOLIA_ADDRESS> \
+  --network roninSaigon
+```
+
+After completing these steps, your CCIP Bridge will be ready for token transfers between Sepolia and Ronin networks. See the "Token Transfer Guide" section below for transfer commands.
+
+## Token Transfer Guide
+
+This section covers how to mint and transfer tokens across chains using the CCIP bridge. All amounts should be specified in wei (10^18 for tokens with 18 decimals).
+
+### 1. Mint Initial Tokens
+First, mint tokens on the source chain. This example mints 1000 ZENT tokens.
+
+```bash
+# Mint 1000 ZENT tokens on Sepolia (1000 * 10^18)
 npx hardhat mintTokens \
---tokenaddress 0xZENT-SEPOLIA \
+--tokenaddress <ZENT_SEPOLIA_ADDRESS> \
 --amount 1000000000000000000000 \
 --network sepolia
+```
 
-# Transfer ZENT Token from Sepolia to Ronin Saigon
+### 2. Cross-Chain Transfer
+Transfer tokens between networks using either LINK or native tokens (ETH/RON) for CCIP fees.
+
+```bash
+# Transfer from Sepolia to Ronin using native ETH for fees
 npx hardhat transferTokens \
---tokenaddress 0xZENT-SEPOLIA \
---amount 10000 \
+--tokenaddress <ZENT_SEPOLIA_ADDRESS> \
+--amount 100000000000000000000 \  # 100 ZENT
 --fee native \
 --destinationchain roninSaigon \
---receiveraddress 0xTARGET-ADDRESS \
+--receiveraddress <RECEIVER_ADDRESS> \
 --network sepolia
 
-# Transfer ZENT Token from Ronin Saigon to Sepolia
+# Transfer from Ronin to Sepolia using LINK for fees
 npx hardhat transferTokens \
---tokenaddress 0xZENT-SAIGON \
---amount 10000 \
---fee native \
+--tokenaddress <ZENT_RONIN_ADDRESS> \
+--amount 50000000000000000000 \   # 50 ZENT
+--fee LINK \
 --destinationchain sepolia \
---receiveraddress 0xTARGET-ADDRESS \
+--receiveraddress <RECEIVER_ADDRESS> \
 --network roninSaigon
 ```
 
+### 3. Track Transfer Status
+After initiating a transfer, you'll receive a message ID in the transaction logs. Use this ID to track the transfer status:
+
+1. Visit [CCIP Explorer](https://ccip.chain.link)
+2. Enter your message ID
+3. Monitor the transfer progress across networks
 
 ## Table of Contents
 
@@ -189,7 +200,7 @@ npx hardhat deployToken [parameters]
 - Deploy a token:
 
   ```bash
-  npx hardhat deployToken --name "Zent" --symbol "ZENTCORGI" --network roninSaigon
+  npx hardhat deployToken --name "Zent" --symbol "ZENT" --network roninSaigon
   ```
 
 - Deploy a token with CCIP admin functionality:
@@ -197,7 +208,7 @@ npx hardhat deployToken [parameters]
   ```bash
   npx hardhat deployToken \
   --name "Zentry" \
-  --symbol "ZENTCORGI" \
+  --symbol "ZENT" \
   --withgetccipadmin true \
   --ccipadminaddress 0xYourCCIPAdminAddress \
   --network roninSaigon
@@ -207,7 +218,7 @@ npx hardhat deployToken [parameters]
   ```bash
   npx hardhat deployToken \
   --name "Zentry" \
-  --symbol "ZENTCORGI" \
+  --symbol "ZENT" \
   --maxsupply 1000000000000000000000 \
   --verifycontract true \
   --network roninSaigon
@@ -255,13 +266,13 @@ Deploys a new token pool, which can either be a Burn & Mint or a Lock & Release 
 ```bash
 # Deploy with custom token decimals
 npx hardhat deployTokenPool \
-  --tokenaddress 0xYourTokenAddress \
+  --tokenaddress <ZENT_SAIGON_ADDRESS> \
   --localtokendecimals 8 \
   --network roninSaigon
 
 # Deploy a Lock & Release pool with liquidity acceptance
 npx hardhat deployTokenPool \
-  --tokenaddress 0xYourTokenAddress \
+  --tokenaddress <ZENT_SAIGON_ADDRESS> \
   --pooltype lockRelease \
   --acceptliquidity true \
   --network roninSaigon
@@ -293,14 +304,14 @@ npx hardhat claimAdmin [parameters]
 - Claim admin using the `owner()` function:
 
   ```bash
-  npx hardhat claimAdmin --tokenaddress 0xYourTokenAddress --network roninSaigon
+  npx hardhat claimAdmin --tokenaddress <ZENT_SAIGON_ADDRESS> --network roninSaigon
   ```
 
 - Claim admin using the `getCCIPAdmin()` function:
 
   ```bash
   npx hardhat claimAdmin \
-  --tokenaddress 0xYourTokenAddress \
+  --tokenaddress <ZENT_SAIGON_ADDRESS> \
   --withccipadmin true \
   --network roninSaigon
   ```
@@ -338,7 +349,7 @@ npx hardhat acceptAdminRole [parameters]
 - Accept the admin role for a token:
 
   ```bash
-  npx hardhat acceptAdminRole --tokenaddress 0xYourTokenAddress --network roninSaigon
+  npx hardhat acceptAdminRole --tokenaddress <ZENT_SAIGON_ADDRESS> --network roninSaigon
   ```
 
 ##### Notes
@@ -372,7 +383,7 @@ npx hardhat setPool [parameters]
 - Set the pool for a token:
 
   ```bash
-  npx hardhat setPool --tokenaddress 0xYourTokenAddress --pooladdress 0xYourPoolAddress --network roninSaigon
+  npx hardhat setPool --tokenaddress <ZENT_SAIGON_ADDRESS> --pooladdress <ZENT_SAIGON_ADDRESS>-POOL --network roninSaigon
   ```
 
 ##### Notes
@@ -420,10 +431,10 @@ Configures a token pool's chain settings, including cross-chain rate limits and 
 ```bash
 # Configure a chain with multiple remote pools
 npx hardhat applyChainUpdates \
-  --pooladdress 0xYourPoolAddress \
-  --remotechain avalanche \
-  --remotepooladdresses "0xPool1,0xPool2" \
-  --remotetokenaddress 0xRemoteTokenAddress \
+  --pooladdress <ZENT_SAIGON_ADDRESS>-POOL \
+  --remotechain sepolia \
+  --remotepooladdresses "<ZENT_SEPOLIA_ADDRESS>-POOL-1,<ZENT_SEPOLIA_ADDRESS>-POOL-2" \
+  --remotetokenaddress <ZENT_SEPOLIA_ADDRESS> \
   --outboundratelimitenabled true \
   --outboundratelimitcapacity 1000000000000000000000 \
   --outboundratelimitrate 100000000000000000 \
@@ -465,13 +476,13 @@ npx hardhat mintTokens [parameters]
 - Mint tokens to the signer's address:
 
   ```bash
-  npx hardhat mintTokens --tokenaddress 0xYourTokenAddress --amount 1000000000000000000 --network roninSaigon
+  npx hardhat mintTokens --tokenaddress <ZENT_SAIGON_ADDRESS> --amount 1000000000000000000 --network roninSaigon
   ```
 
 - Mint tokens to a specific receiver:
 
   ```bash
-  npx hardhat mintTokens --tokenaddress 0xYourTokenAddress --amount 1000000000000000000 --receiveraddress 0xReceiverAddress --network roninSaigon
+  npx hardhat mintTokens --tokenaddress <ZENT_SAIGON_ADDRESS> --amount 1000000000000000000 --receiveraddress <WALLET_ADDRESS> --network roninSaigon
   ```
 
 ##### Notes
@@ -524,10 +535,10 @@ npx hardhat transferTokens [parameters]
 
   ```bash
   npx hardhat transferTokens \
-  --tokenaddress 0xYourTokenAddress \
+  --tokenaddress <ZENT_SAIGON_ADDRESS> \
   --amount 1000000000000000000 \
-  --destinationchain avalanche \
-  --receiveraddress 0xReceiverAddress \
+  --destinationchain sepolia \
+  --receiveraddress <WALLET_ADDRESS> \
   --fee LINK \
   --network roninSaigon
   ```
@@ -536,10 +547,10 @@ npx hardhat transferTokens [parameters]
 
   ```bash
   npx hardhat transferTokens \
-  --tokenaddress 0xYourTokenAddress \
+  --tokenaddress <ZENT_SAIGON_ADDRESS> \
   --amount 1000000000000000000 \
-  --destinationchain avalanche \
-  --receiveraddress 0xReceiverAddress \
+  --destinationchain sepolia \
+  --receiveraddress <WALLET_ADDRESS> \
   --fee native \
   --network roninSaigon
   ```
@@ -579,7 +590,7 @@ npx hardhat getPoolConfig [parameters]
 #### Examples
 
 ```bash
-npx hardhat getPoolConfig --pooladdress 0xYourPoolAddress --network roninSaigon
+npx hardhat getPoolConfig --pooladdress <ZENT_SAIGON_ADDRESS>-POOL --network roninSaigon
 ```
 
 #### Output
@@ -605,33 +616,6 @@ The task displays:
     - Enabled status
     - Capacity
     - Rate
-
-Example output:
-
-```
-Pool Basic Information:
-  Rate Limit Admin: 0x1234...5678
-  Router Address: 0xabcd...ef01
-  Token Address: 0x9876...5432
-  Allow List Enabled: true
-  Allow List Addresses:
-    1: 0xaaaa...bbbb
-    2: 0xcccc...dddd
-
-Configuration for Remote Chain: avalanche (14767482510784806043)
-  Remote Pool Addresses:
-    1: 0x1111...2222
-    2: 0x3333...4444
-  Remote Token Address: 0x5555...6666
-  Outbound Rate Limiter:
-    Enabled: true
-    Capacity: 1000000000000000000000
-    Rate: 100000000000000000
-  Inbound Rate Limiter:
-    Enabled: true
-    Capacity: 1000000000000000000000
-    Rate: 100000000000000000
-```
 
 ##### Notes
 
@@ -691,7 +675,7 @@ npx hardhat updateRateLimiters --pooladdress <POOL_ADDRESS> --remotechain <REMOT
 
   ```bash
   npx hardhat updateRateLimiters \
-    --pooladdress 0xYourPoolAddress \
+    --pooladdress <ZENT_SAIGON_ADDRESS>-POOL \
     --remotechain arbitrumSepolia \
     --ratelimiter both \
     --outboundratelimitenabled true \
@@ -707,7 +691,7 @@ npx hardhat updateRateLimiters --pooladdress <POOL_ADDRESS> --remotechain <REMOT
 
   ```bash
   npx hardhat updateRateLimiters \
-    --pooladdress 0xYourPoolAddress \
+    --pooladdress <ZENT_SAIGON_ADDRESS>-POOL \
     --remotechain arbitrumSepolia \
     --ratelimiter outbound \
     --outboundratelimitenabled true \
@@ -733,7 +717,7 @@ Example output:
 
 ```bash
 == Logs ==
-Current Rate Limiters for token pool: 0xYourPoolAddress
+Current Rate Limiters for token pool: <ZENT_SAIGON_ADDRESS>-POOL
 
   Outbound Rate Limiter:
     Enabled: false
@@ -787,9 +771,9 @@ npx hardhat addRemotePool [parameters]
 
 ```bash
 npx hardhat addRemotePool \
-  --pooladdress 0xYourPoolAddress \
+  --pooladdress <ZENT_SAIGON_ADDRESS>-POOL \
   --remotechain sepolia \
-  --remotepooladdress 0xRemotePoolAddress \
+  --remotepooladdress <ZENT_SEPOLIA_ADDRESS>-POOL \
   --network roninSaigon
 ```
 
@@ -819,9 +803,9 @@ npx hardhat removeRemotePool [parameters]
 
 ```bash
 npx hardhat removeRemotePool \
-  --pooladdress 0xYourPoolAddress \
+  --pooladdress <ZENT_SAIGON_ADDRESS>-POOL \
   --remotechain sepolia \
-  --remotepooladdress 0xRemotePoolAddress \
+  --remotepooladdress <ZENT_SEPOLIA_ADDRESS>-POOL \
   --network roninSaigon
 ```
 
@@ -849,7 +833,7 @@ npx hardhat setRateLimitAdmin [parameters]
 
 ```bash
 npx hardhat setRateLimitAdmin \
-  --pooladdress 0xYourPoolAddress \
+  --pooladdress <ZENT_SAIGON_ADDRESS>-POOL \
   --adminaddress 0xNewAdminAddress \
   --network roninSaigon
 ```
@@ -882,19 +866,19 @@ npx hardhat updateAllowList [parameters]
 ```bash
 # Add addresses to allowlist
 npx hardhat updateAllowList \
-  --pooladdress 0xYourPoolAddress \
+  --pooladdress <ZENT_SAIGON_ADDRESS>-POOL \
   --addaddresses "0xAddress1,0xAddress2" \
   --network roninSaigon
 
 # Remove addresses from allowlist
 npx hardhat updateAllowList \
-  --pooladdress 0xYourPoolAddress \
+  --pooladdress <ZENT_SAIGON_ADDRESS>-POOL \
   --removeaddresses "0xAddress3,0xAddress4" \
   --network roninSaigon
 
 # Both add and remove addresses
 npx hardhat updateAllowList \
-  --pooladdress 0xYourPoolAddress \
+  --pooladdress <ZENT_SAIGON_ADDRESS>-POOL \
   --addaddresses "0xAddress1,0xAddress2" \
   --removeaddresses "0xAddress3,0xAddress4" \
   --network roninSaigon
@@ -924,7 +908,7 @@ npx hardhat transferTokenAdminRole [parameters]
 
 ```bash
 npx hardhat transferTokenAdminRole \
-  --tokenaddress 0xYourTokenAddress \
+  --tokenaddress <ZENT_SAIGON_ADDRESS> \
   --newadmin 0xNewAdminAddress \
   --network roninSaigon
 ```
@@ -962,7 +946,7 @@ npx hardhat acceptTokenAdminRole [parameters]
 
 ```bash
 npx hardhat acceptTokenAdminRole \
-  --tokenaddress 0xYourTokenAddress \
+  --tokenaddress <ZENT_SAIGON_ADDRESS> \
   --network roninSaigon
 ```
 
@@ -1006,8 +990,8 @@ npx hardhat getCurrentRateLimits [parameters]
 
 ```bash
 npx hardhat getCurrentRateLimits \
-  --pooladdress 0xYourPoolAddress \
-  --remotechain avalanche \
+  --pooladdress <ZENT_SAIGON_ADDRESS>-POOL \
+  --remotechain sepolia \
   --network roninSaigon
 ```
 
@@ -1015,7 +999,7 @@ npx hardhat getCurrentRateLimits \
 
 ```
 Rate Limiter States for Chain: avalanche
-Pool Address: 0xYourPoolAddress
+Pool Address: <ZENT_SAIGON_ADDRESS>-POOL
 Chain Selector: 14767482510784806043
 
 Outbound Rate Limiter:

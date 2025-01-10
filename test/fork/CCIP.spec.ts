@@ -6,19 +6,21 @@ import { BurnMintERC677 } from "../../typechain-types";
 describe("CCIP", function () {
   it("should deploy and configure ZENT token bridge on CCIP", async function () {
     /*
-    Steps:
-    1. Fork Ethereum Mainnet
-    2. Deploy token pool on mainnet
-    2. Impersonate Chainlink TokenAdminRegistry to call proposeAdministrator()
-    3. Accept admin role for ZENT token on mainnet
-    4. Link and config token pool on ZENT on mainnet
-    5. Fork Ronin Mainnet
-    6. Deploy ZENT on Ronin (rZENT)
-    6. Deploy token pool for rZENT on Ronin
-    7. Claim admin role of rZENT token
-    8. Accept admin role of rZENT token
-    9. Link and config token pool for rZENT on Ronin
-    */
+     * Ethereum Mainnet:
+     * 1. Fork Ethereum Mainnet
+     * 2. Deploy CCIP TokenPool contract
+     * 3. Impersonate Chainlink TokenAdminRegistry to propose administrator
+     * 4. Accept admin role for ZENT token
+     * 5. Link and configure TokenPool for ZENT
+     *
+     * Ronin Network:
+     * 6. Fork Ronin Mainnet
+     * 7. Deploy BurnMintERC776 contract
+     * 8. Deploy TokenPool for ZENT
+     * 9. Claim and accept admin role for ZENT token
+     * 10. Link and configure TokenPool for ZENT
+     *
+     */
     const mainnetConfig = networks[Chains.mainnet];
     const roninConfig = networks[Chains.ronin];
     const [signer] = await hre.ethers.getSigners();
