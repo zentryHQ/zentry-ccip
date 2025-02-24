@@ -1,4 +1,4 @@
-import { task } from "hardhat/config";
+import { task, types } from "hardhat/config";
 import { Chains, networks, logger } from "../config";
 
 interface MintTokensArgs {

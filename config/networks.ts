@@ -30,14 +30,11 @@ const networks: Networks = {
   [Chains.roninSaigon]: {
     ...configData.roninSaigon,
     url: process.env.RONIN_SAIGON_RPC_URL || "UNSET",
-    gasPrice: undefined,
-    nonce: undefined,
     accounts,
   },
   [Chains.ronin]: {
     ...configData.ronin,
     url: process.env.RONIN_RPC_URL || "UNSET",
-    gasPrice: 20_000_000_000,
     accounts,
   },
 };
