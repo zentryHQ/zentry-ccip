@@ -26,7 +26,7 @@ task("deployToken", "Deploys a token")
   .addParam("name", "The name of the token") // Token name
   .addParam("symbol", "The symbol of the token") // Token symbol
   .addOptionalParam("decimals", "The number of decimals", 18, types.int) // Number of decimals (default: 18)
-  .addOptionalParam("maxsupply", "The maximum supply", 0, types.bigint) // If maxSupply is 0, the the supply is unlimited
+  .addOptionalParam("maxsupply", "The maximum supply", 0, types.int) // If maxSupply is 0, the the supply is unlimited
   .addOptionalParam(
     "verifycontract", // Option to verify the contract on Etherscan
     "Verify the contract on Blockchain scan",
