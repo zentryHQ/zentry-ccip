@@ -42,5 +42,27 @@
     "link": "0x3902228D6A3d2Dc44731fD9d45FeE6a61c722D0b",
     "confirmations": 2,
     "nativeCurrencySymbol": "RON"
+  },
+  "bnb": {
+    "chainId": 56,
+    "chainSelector": "11344663589394136015",
+    "router": "0x34B03Cb9086d7D758AC55af71584F81A598759FE",
+    "rmnProxy": "0x9e09697842194f77d315E0907F1Bda77922e8f84",
+    "tokenAdminRegistry": "0x736Fd8660c443547a85e4Eaf70A49C1b7Bb008fc",
+    "registryModuleOwnerCustom": "0x47Db76c9c97F4bcFd54D8872FDb848Cab696092d",
+    "link": "0x404460C6A5EdE2D891e8297795264fDe62ADBB75",
+    "confirmations": 2,
+    "nativeCurrencySymbol": "BNB"
+  },
+  "bnbTestnet": {
+    "chainId": 97,
+    "chainSelector": "13264668187771770619",
+    "router": "0xE1053aE1857476f36A3C62580FF9b016E8EE8F6f",
+    "rmnProxy": "0xA8C0c11bf64AF62CDCA6f93D3769B88BdD7cb93D",
+    "tokenAdminRegistry": "0xF8f2A4466039Ac8adf9944fD67DBb3bb13888f2B",
+    "registryModuleOwnerCustom": "0x763685240370758c5ac6C5F7c22AB36684c0570E",
+    "link": "0x84b9B910527Ad5C03A9Ca831909E21e236EA7b06",
+    "confirmations": 2,
+    "nativeCurrencySymbol": "tBNB"
   }
 }

@@ -17,6 +17,8 @@ export enum Chains {
   sepolia = "sepolia",
   roninSaigon = "roninSaigon",
   ronin = "ronin",
+  bnb = "bnb",
+  bnbTestnet = "bnbTestnet",
 }
 
 export type Configs = {
@@ -37,10 +39,6 @@ export type Networks =
       hardhat?: HardhatNetworkUserConfig & { confirmations: number };
     };
 
-type ApiKeyConfig = Partial<{
-  [key in Chains]: string;
-}>;
-
 interface Urls {
   apiURL: string;
   browserURL: string;
@@ -53,7 +51,7 @@ interface CustomChain {
 }
 
 export interface EtherscanConfig {
-  apiKey: ApiKeyConfig;
+  apiKey: string;
   customChains: CustomChain[];
 }
 

@@ -37,13 +37,20 @@ const networks: Networks = {
     url: process.env.RONIN_RPC_URL || "UNSET",
     accounts,
   },
+  [Chains.bnb]: {
+    ...configData.bnb,
+    url: process.env.BNB_RPC_URL || "UNSET",
+    accounts,
+  },
+  [Chains.bnbTestnet]: {
+    ...configData.bnbTestnet,
+    url: process.env.BNB_TESTNET_RPC_URL || "UNSET",
+    accounts,
+  },
 };
 
 const etherscan: EtherscanConfig = {
-  apiKey: {
-    [Chains.sepolia]: process.env.ETHERSCAN_API_KEY || "UNSET",
-    [Chains.mainnet]: process.env.ETHERSCAN_API_KEY || "UNSET",
-  },
+  apiKey: process.env.ETHERSCAN_API_KEY || "UNSET",
   customChains: [
     {
       network: Chains.roninSaigon,
